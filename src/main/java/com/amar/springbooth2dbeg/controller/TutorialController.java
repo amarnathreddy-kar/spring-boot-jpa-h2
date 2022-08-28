@@ -23,7 +23,6 @@ public class TutorialController {
     public ResponseEntity<List<Tutorial>> getAllTutorials(@RequestParam(required = false) String title){
         try{
             List<Tutorial> tutorials = new ArrayList<Tutorial>();
-
             if(title == null){
                 tutorialRepository.findAll().forEach(tutorials::add);
             } else {
@@ -41,7 +40,6 @@ public class TutorialController {
     @GetMapping("/tutorials/{id}")
     public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") long id){
         Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
-
         if(tutorialData.isPresent()){
             return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
         } else {
@@ -59,7 +57,7 @@ public class TutorialController {
         }
     }
 
-    @PutMapping("/tutorial/{id}")
+    @PutMapping("/tutorials/{id}")
     public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial){
         Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
         if(tutorialData.isPresent()){
@@ -87,7 +85,7 @@ public class TutorialController {
     public ResponseEntity<HttpStatus> deleteTutorialById(@PathVariable("id") long id){
         try{
             tutorialRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
